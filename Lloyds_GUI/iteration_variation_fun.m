@@ -24,6 +24,8 @@ function Density = iteration_variation_fun(Density,iteration_number,...
 % the value of Density at iteration k is Density(x,y,k), in this function
 % you would want to generate Density(x,y,k+1).
 
+arrayLength = 25;
+move = randi([-1 1],arrayLength);
 change = mod(iteration_number,delay); %Checks if iteration_number divides delay.
 if change == 0
     for i = 1:size(Density,1)
@@ -32,27 +34,34 @@ if change == 0
             y = j/Partition_Number;
             %%%%% This is where you put your custom function!%%%%
             %% Internal Density change due to agents
-            check = 0;
-            for k = 1:size(Agent_Positions,1)
-                if (x - Agent_Positions(k,1))^2 + (y - Agent_Positions(k,2))^2 <= r_o^2 && check == 0
-                    Density(i,j) = Density(i,j) - Density(i,j)/size(Agent_Positions,1); %This will halve the density if an agent is covering it
-                                                   % Note that only one
-                                                   % agent at a time can
-                                                   % cover the density
-                    if Density(i,j) < 0
-                        Density(i,j) = 0;
-                    end
-                    check = 1;
+%             check = 0;
+%             for k = 1:size(Agent_Positions,1)
+%                 if (x - Agent_Positions(k,1))^2 + (y - Agent_Positions(k,2))^2 <= r_o^2 && check == 0
+%                     Density(i,j) = Density(i,j) - Density(i,j)/size(Agent_Positions,1); %This will halve the density if an agent is covering it
+%                                                    % Note that only one
+%                                                    % agent at a time can
+%                                                    % cover the density
+%                     if Density(i,j) < 0
+%                         Density(i,j) = 0;
+%                     end
+%                     check = 1;
+%                 end
+%             end
+            %% External Density change due to nature (example)
+            if Density(i,j) ~= 0
+                if (1 <= i + move(i,j)) && (i  + move(i,j)<= arrayLength) 
+                    Density(i,j) = Density (i+move(i,j),j);
+                end
+                if (1 <= j + move(i,j)) && (j  + move(i,j)<= arrayLength)
+                    Density(i,j) = Density (i,j+move(i,j));
                 end
             end
-            %% External Density change due to nature (example)
-            %{
-            if i > 1
-                Density(i,j) = Density(i-1,j);
-            elseif i == 1
-                Density(i,j) = 0;
-            end
-            %}
+                            
+%             if i > 1
+%                 Density(i,j) = Density(i-1,j);
+%             elseif i == 1
+%                 Density(i,j) = 0;
+%             end
         end
     end
 end
