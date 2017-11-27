@@ -10,4 +10,4 @@
 % end
 arr = randi([0 3],25);
 %arr(:) = round(1+arr(:)*2);      
-save('C:\Users\Max Berkowitz\OneDrive - Queen''s University\2nd Year\APSC 200-293\P2\strikeforce\Lloyds_GUI\density_matrix.mat','arr');
+s%ave('C:\Users\Max Berkowitz\OneDrive - Queen''s University\2nd Year\APSC 200-293\P2\strikeforce\Lloyds_GUI\density_matrix.mat','arr');

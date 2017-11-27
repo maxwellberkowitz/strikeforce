@@ -58,8 +58,8 @@ if change == 0
             end
             if Density(i+moveInt,j) ~= 0
                 if (1 <= j + move(i,j)) && (j  + move(i,j)<= arrayLength)
-                    Density (i+moveInt,j+move(i,j))=Density(i+moveInt,j);
-                    Density(i+moveInt,j)=0;
+                    Density (i+moveInt,j+move(i,j))=Density(i,j);
+                    Density(
                 end
             end
                             
