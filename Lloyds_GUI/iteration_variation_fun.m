@@ -25,7 +25,8 @@ function Density = iteration_variation_fun(Density,iteration_number,...
 % you would want to generate Density(x,y,k+1).
 
 arrayLength = 25;
-move = randi([-1 1],arrayLength);
+xmove = randi([-1 1],arrayLength);
+ymove = randi([-1 1],arrayLength);
 change = mod(iteration_number,delay); %Checks if iteration_number divides delay.
 if change == 0
     for i = 1:size(Density,1)
@@ -49,20 +50,40 @@ if change == 0
 %             end
             %% External Density change due to nature (example)
             if Density(i,j) ~= 0
-                if (1 <= i + move(i,j)) && (i  + move(i,j)<= arrayLength) 
-                    Density (i+move(i,j),j)= Density(i,j);
-                    Density (i,j)= 0;
-                    moveInt=move(i,j);
+                if (1 <= i + xmove(i,j)) && (i  + xmove(i,j)<= arrayLength) && (xmove(i,j) ~= 0) && (Density(i+xmove(i,j),j) == 0)
+                    Density(i+xmove(i,j),j)= Density(i,j);
+                    Density(i,j)= 0;
+                    xmoveInt = xmove(i,j);
                 end
-            else moveInt = 0;    
+            else xmoveInt = 0;    
             end
-            if Density(i+moveInt,j) ~= 0
-                if (1 <= j + move(i,j)) && (j  + move(i,j)<= arrayLength)
-                    Density (i+moveInt,j+move(i,j))=Density(i+moveInt,j);
-                    Density(i+moveInt,j)=0;
+            if Density(i+xmoveInt,j) ~= 0
+                if (1 <= j + ymove(i,j)) && (j  + ymove(i,j)<= arrayLength) && (ymove(i,j) ~= 0) && (Density(i+xmoveInt,j+ymove(i,j)) == 0)
+                    Density(i+xmoveInt,j+ymove(i,j)) = Density(i+xmoveInt,j);
+                    Density(i+xmoveInt,j)=0;
+                    ymoveInt = ymove(i,j);
                 end
+            else ymoveInt = 0;
             end
-                            
+            threatL = 0;
+            threatL = Density(i + xmoveInt,j + ymoveInt);
+            end
+            if (i + xmoveInt +1)<=25
+                threatL = threatL + Density(i + xmoveInt + 1,j + ymoveInt);
+            end
+            if 1<=(i + xmoveInt - 1)
+                threatL = threatL + Density(i + xmoveInt - 1,j + ymoveInt);
+            end
+            if (j + ymoveInt + 1)<=25
+                threatL = threatL + Density(i + xmoveInt,j + ymoveInt + 1);
+            end
+            if 1<=(j + ymoveInt - 1)
+                threatL = threatL + Density(i + xmoveInt,j + ymoveInt - 1);
+            end
+            if threatL > 5
+                fprintf('Threat occuring at cooridinate (%d,%d)',(i + xmoveInt),(j + ymoveInt));
+            end
+            
 %             if i > 1
 %                 Density(i,j) = Density(i-1,j);
 %             elseif i == 1
